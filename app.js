@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const hpp = require('hpp');
 const xss = require('xss-clean');
@@ -71,6 +72,8 @@ app.use((req, res, next) => {
   next();
 });
 // 3) ROUTES
+
+app.use(compression());
 
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
