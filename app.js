@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
+const cors = require('cors');
 const hpp = require('hpp');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
@@ -28,6 +29,19 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) MIDDLEWARE
+
+//Implement CORS
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: 'https://www.natours.com/'
+//   })
+// );
+
+app.options('*', cors());
+
+// app.options('/api/v1/tours/:id', cors());
 
 // Serving public files
 app.use(express.static(path.join(__dirname, 'public')));
