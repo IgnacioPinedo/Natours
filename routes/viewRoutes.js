@@ -11,7 +11,13 @@ router.get('/', /* bookingController.createBookingCheckout, */ authController.is
 
 router.get('/tour/:slug', authController.isLoggedIn, viewController.getTour);
 
-router.get('/login', authController.isLoggedIn, viewController.getLoginForm);
+router.get('/login', viewController.getLoginForm);
+
+router.get('/signup', viewController.getSignUpForm);
+
+router.get('/forgot', viewController.getForgotForm);
+
+router.get('/reset', viewController.getResetForm);
 
 router.get('/me', authController.protect, viewController.getAccount);
 

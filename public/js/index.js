@@ -1,13 +1,16 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import { login, logout } from './login';
+import { login, logout, signup, forgot, reset } from './login';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 import { showAlert } from './alerts';
 
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
+const forgotForm = document.querySelector('.form--forgot');
+const resetForm = document.querySelector('.form--reset');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-settings');
@@ -71,3 +74,35 @@ if (bookBtn)
 
 const alertMessage = document.querySelector('body').dataset.alert;
 if (alertMessage) showAlert('success', alertMessage, 15);
+
+if (signupForm)
+  signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.target.lastChild.lastChild.textContent = 'Processing ...';
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    await signup(name, email, password, passwordConfirm);
+    e.target.lastChild.lastChild.textContent = 'Sign Up';
+  });
+
+if (forgotForm)
+  forgotForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.target.lastChild.lastChild.textContent = 'Processing ...';
+    const email = document.getElementById('email').value;
+    await forgot(email);
+    e.target.lastChild.lastChild.textContent = 'Send Email';
+  });
+
+if (resetForm)
+  resetForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.target.lastChild.lastChild.textContent = 'Processing ...';
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    const resetToken = new URLSearchParams(window.location.search).get('resetToken');
+    await reset(password, passwordConfirm, resetToken);
+    e.target.lastChild.lastChild.textContent = 'Change password';
+  });
